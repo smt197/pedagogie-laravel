@@ -1,0 +1,341 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Gestion des Utilisateurs",
+    "version": "1.0.0",
+    "description": "API pour la gestion des utilisateurs, y compris l'authentification et la manipulation des données utilisateur."
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "paths": {
+    "/api/v1/login": {
+      "post": {
+        "summary": "Connexion d'un utilisateur",
+        "description": "Permet aux utilisateurs de se connecter en utilisant leurs identifiants.",
+        "operationId": "loginUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "admin@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Connexion réussie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "Jeton d'accès JWT pour l'authentification",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "Jeton de rafraîchissement",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "user": {
+                      "type": "object",
+                      "description": "Détails de l'utilisateur connecté",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "example": "abc123"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "user@example.com"
+                        },
+                        "displayName": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "admin"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Échec de l'authentification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Identifiants incorrects."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "Récupérer tous les utilisateurs",
+        "description": "Retourne une liste de tous les utilisateurs, avec la possibilité de filtrer par rôle.",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "description": "Filtrer les utilisateurs par rôle",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "admin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateurs récupérés avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Utilisateurs récupérés avec succès"
+                    },
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string",
+                            "example": "abc123"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "user@example.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "example": "admin"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur lors de la récupération des utilisateurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la récupération des utilisateurs"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Détails de l'erreur"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un nouvel utilisateur",
+        "description": "Crée un nouvel utilisateur dans le système.",
+        "operationId": "createUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nom": { "type": "string", "example": "Doe" },
+                  "prenom": { "type": "string", "example": "John" },
+                  "email": { "type": "string", "example": "john.doe@example.com" },
+                  "login": { "type": "string", "example": "johndoe" },
+                  "password": { "type": "string", "example": "password123" },
+                  "fonction": { "type": "string", "example": "Manager" },
+                  "statut": { "type": "string", "example": "Actif" },
+                  "role_id": { "type": "integer", "example": 2 },
+                  "photo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Utilisateur créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Utilisateur créé avec succès"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "uid": { "type": "string", "example": "abc123" },
+                        "email": { "type": "string", "example": "john.doe@example.com" },
+                        "role": { "type": "string", "example": "admin" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur lors de la création de l'utilisateur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Erreur lors de la création de l'utilisateur" },
+                    "error": { "type": "string", "example": "Détails de l'erreur" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "patch": {
+        "summary": "Mettre à jour un utilisateur",
+        "description": "Mise à jour des informations d'un utilisateur existant.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de l'utilisateur",
+            "schema": {
+              "type": "string",
+              "example": "abc123"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nom": { "type": "string", "example": "Doe" },
+                  "prenom": { "type": "string", "example": "John" },
+                  "email": { "type": "string", "example": "john.doe@example.com" },
+                  "password": { "type": "string", "example": "password123" },
+                  "photo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Utilisateur mis à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Utilisateur mis à jour avec succès"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "uid": { "type": "string", "example": "abc123" },
+                        "email": { "type": "string", "example": "john.doe@example.com" },
+                        "role": { "type": "string", "example": "admin" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur lors de la mise à jour de l'utilisateur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Erreur lors de la mise à jour de l'utilisateur" },
+                    "error": { "type": "string", "example": "Détails de l'erreur" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
