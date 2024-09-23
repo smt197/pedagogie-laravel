@@ -192,6 +192,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'FirebaseClient' => App\Facades\FirebaseClientFacade::class,
         'User' => App\Facades\UserFacade::class,
+        'Referentiel' => App\Facades\RefFacade::class,
     ])->toArray(),
 
 ];

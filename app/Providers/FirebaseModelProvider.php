@@ -4,8 +4,12 @@ namespace App\Providers;
 
 use App\Models\BaseModel;
 use App\Models\BaseModelInterface;
+use App\Models\ModelPromo;
+use App\Models\ModelReferentiel;
+use App\Models\PromotionFirebaseModel;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Kreait\Firebase\Contract\Database;
 
 class FirebaseModelProvider extends ServiceProvider
 {
@@ -15,6 +19,14 @@ class FirebaseModelProvider extends ServiceProvider
 
         $this->app->bind('user', function($app) {
             return new User();
+        });
+
+        $this->app->bind('referentiel', function($app) {
+            return new ModelReferentiel();
+        });
+
+        $this->app->singleton('promotion', function ($app) {
+            return new PromotionFirebaseModel($app->make(Database::class));
         });
     }
 

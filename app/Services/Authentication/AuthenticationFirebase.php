@@ -112,6 +112,7 @@ class AuthenticationFirebase implements AuthenticationServiceInterface
     public function login($credentials)
     {
         
+        
     }
 
 

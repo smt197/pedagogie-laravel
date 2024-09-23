@@ -26,4 +26,5 @@ abstract class BaseModel extends Authenticatable implements BaseModelInterface
     {
         return static::query()->find($id);
     }
+
 }

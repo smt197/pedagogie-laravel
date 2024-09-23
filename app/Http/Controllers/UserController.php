@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UserExport;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\User\UserServiceInterface;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
     protected $userService;
+    protected $exportService;
 
     public function __construct(UserServiceInterface $userService)
     {
@@ -77,5 +80,14 @@ class UserController extends Controller
                 'error' => $e->getMessage(),
             ], $e->getMessage() === 'Action non autorisée' ? 403 : 500);
         }
+    }
+
+    public function exportExcel()
+    {
+        // Stocker le fichier Excel dans le répertoire storage/app/public
+        Excel::store(new UserExport, 'users.xlsx', 'public');
+    
+        // Télécharger le fichier après stockage
+        return Excel::download(new UserExport, 'users.xlsx');
     }
 }
