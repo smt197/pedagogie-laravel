@@ -28,7 +28,7 @@ services:
       - .:/var/www
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "1000:80"
+      - "10000:80"
     depends_on:
       - app
     networks:
