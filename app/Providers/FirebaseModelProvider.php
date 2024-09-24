@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\ApprenantFirebaseModel;
 use App\Models\BaseModel;
 use App\Models\BaseModelInterface;
-use App\Models\ModelPromo;
 use App\Models\ModelReferentiel;
 use App\Models\PromotionFirebaseModel;
 use App\Models\User;
@@ -27,6 +27,10 @@ class FirebaseModelProvider extends ServiceProvider
 
         $this->app->singleton('promotion', function ($app) {
             return new PromotionFirebaseModel($app->make(Database::class));
+        });
+
+        $this->app->singleton('apprenant', function ($app) {
+            return new ApprenantFirebaseModel($app->make(Database::class));
         });
     }
 

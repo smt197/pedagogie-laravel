@@ -109,5 +109,19 @@ class PromotionController extends Controller
                 }
             }
 
+            public function closePromotion (string $id)
+            {
+                try {
+                    $promotion = $this->promotionService->closePromotion($id);
+                    return response()->json($promotion, 200);
+                } catch (\Exception $e) {
+                    return response()->json(['error' => $e->getMessage()], 400);
+                }
+            }
+
+
+
+
+
 
 }

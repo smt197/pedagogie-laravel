@@ -217,4 +217,30 @@ class PromotionService
         Log::info('Active referentiels for promotion ID: ' . $id, $activeReferentiels);
         return $activeReferentiels;
     }
+
+    public function closePromotion(string $id)
+    {
+        Log::info('Attempting to close promotion ID: ' . $id);
+        $promotion = $this->promotionRepository->findPromotion($id);
+        if (!$promotion) {
+            Log::error('Promotion not found for ID: ' . $id);
+            throw new Exception("Promotion not found.");
+        }
+
+        // Vérifier que la date de fin est atteinte
+        if (Carbon::now()->lt(Carbon::parse($promotion['date_fin']))) {
+            Log::warning('Attempt to close promotion before end date.', ['promotion' => $promotion]);
+            throw new Exception("La promotion ne peut être clôturée que si la date de fin est atteinte.");
+        }
+
+        // Mettre à jour l'état de la promotion à 'Clôturé'
+        $promotion['etat'] = 'Clôturé';
+        $this->promotionRepository->updatePromotion($id, $promotion);
+        Log::info('Promotion closed successfully.');
+
+        // Déclencher le job pour envoyer les relevés de notes
+        // dispatch(new SendPromotionGradesJob($promotion));
+
+        return $promotion;
+    }
 }

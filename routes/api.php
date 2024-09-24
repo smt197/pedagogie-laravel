@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApprenantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReferentielController;
@@ -32,15 +33,35 @@ Route::middleware(['auth:api', 'check.auth'])->prefix('v1')->group(function () {
     Route::get('/archive/referentiels', [ReferentielController::class, 'archived']);
 
     Route::post('/promotions', [PromotionController::class, 'createPromotion']);
-    Route::patch('/promotions/{id}', [PromotionController::class, 'updatePromotion']);
+    Route::patch('/promotions/{id}', [PromotionController::class, 'updatePromotion'])->middleware('check_promotion_state:id');
     Route::delete('/promotions/{id}', [PromotionController::class, 'deletePromotion']);
     Route::get('/promotions/deleted', [PromotionController::class, 'getDeletedPromotions']);
     Route::get('/promotions', [PromotionController::class, 'getAllPromotions']);
   
     Route::patch('promotions/{id}/referentiels', [PromotionController::class, 'updatePromotionReferentiels']);
-    Route::patch('promotions/{id}/etat', [PromotionController::class, 'updatePromotionEtat']);
+    Route::patch('promotions/{id}/etat', [PromotionController::class, 'updatePromotionEtat'])->middleware('check_promotion_state:id');
     Route::get('promotions/encours', [PromotionController::class, 'getActivePromotion']);
     Route::get('promotions/{id}/referentiels', [PromotionController::class, 'getPromotionReferentiels']);
+    Route::patch('promotions/{id}/cloturer', [PromotionController::class, 'closePromotion'])->middleware('check_promotion_state:id');
+
+    Route::post('apprenants', [ApprenantController::class, 'store']);
+    Route::get('apprenants', [ApprenantController::class, 'getAllApprenants']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // Ajoutez votre route protégée ici

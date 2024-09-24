@@ -91,5 +91,17 @@ class FirebaseService implements FirebaseServiceInterface
         }
     }
 
+    public function findUserByEmail($email)
+    {
+        try {
+            $user = $this->auth->getUserByEmail($email);
+            return $user;
+        } catch (UserNotFound $e) {
+            throw new \Exception('Utilisateur non trouvé: '. $e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération de l\'utilisateur: '. $e->getMessage());
+        }
+    }
+
 
 }

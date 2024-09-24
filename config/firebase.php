@@ -143,14 +143,7 @@ return [
 
             'storage' => [
 
-                /*
-                 * Your project's default storage bucket usually uses the project ID
-                 * as its name. If you have multiple storage buckets and want to
-                 * use another one as the default for your application, you can
-                 * override it here.
-                 */
-
-                'default_bucket' => env('FIREBASE_STORAGE_DEFAULT_BUCKET'),
+                'default_bucket' => env('FIREBASE_STORAGE_BUCKET'),
 
             ],
 

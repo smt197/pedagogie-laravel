@@ -8,4 +8,5 @@ interface FirebaseServiceInterface
     public function storeUserDetails($uid, $details);
     public function findAll();
     public function updateUser($uid, $data);
+    public function findUserByEmail($email);
 }

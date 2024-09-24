@@ -1964,6 +1964,102 @@
           }
         }
       }
+    },
+    "/api/v1/promotions/{id}/cloturer": {
+      "patch": {
+        "summary": "Clôturer une promotion",
+        "description": "Clôture une promotion en mettant à jour son état à 'Clôturé' lorsque la date de fin est atteinte. Déclenche également l'envoi des relevés de notes.",
+        "operationId": "closePromotion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "L'ID de la promotion à clôturer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Promotion clôturée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "promo123"
+                    },
+                    "etat": {
+                      "type": "string",
+                      "example": "Clôturé"
+                    },
+                    "date_fin": {
+                      "type": "string",
+                      "example": "2024-12-31"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Promotion closed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Impossible de clôturer la promotion avant la date de fin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "La promotion ne peut être clôturée que si la date de fin est atteinte."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Promotion non trouvée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Promotion not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur interne",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la clôture de la promotion."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

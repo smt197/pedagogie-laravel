@@ -110,6 +110,13 @@ class UserServiceImpl implements UserServiceInterface
         }
     }
 
+    public function findUserByEmail($email)
+    {
+        $user = $this->firebaseService->findUserByEmail($email); // Exemple de recherche via Firebase
+        return $user;
+    }
+
+
     public function canCreateUser($userRole, $newUserRole)
     {
         $rolePermissions = [
