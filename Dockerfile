@@ -30,14 +30,14 @@ RUN pecl install mongodb \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copier le projet Laravel dans le conteneur
-WORKDIR /var/www/html
+WORKDIR /var/www
 COPY . .
 
 # Installer les dépendances PHP
 RUN composer install --optimize-autoloader --no-dev
 
 # Changer les permissions pour les fichiers Laravel (storage et cache)
-RUN chown -R www-data:www-data /var/www/html \
+RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
