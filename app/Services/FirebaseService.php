@@ -13,8 +13,9 @@ class FirebaseService implements FirebaseServiceInterface
 
     public function __construct()
     {
+        $firebaseCredentials = base64_decode(env('FIREBASE_CREDENTIALS'));
         $firebase = (new Factory)
-            ->withServiceAccount(env('FIREBASE_CREDENTIALS'))
+            ->withServiceAccount(json_decode($firebaseCredentials, true))
             ->withDatabaseUri(env('FIREBASE_DATABASE_URL'));
 
         $this->auth = $firebase->createAuth();

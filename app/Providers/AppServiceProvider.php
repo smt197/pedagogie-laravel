@@ -34,8 +34,9 @@ class AppServiceProvider extends ServiceProvider
 
           // Assurez-vous d'avoir le binding Firebase
           $this->app->singleton(Database::class, function ($app) {
+            $firebaseCredentials = base64_decode(env('FIREBASE_CREDENTIALS'));
             return (new Factory)
-                ->withServiceAccount(env('FIREBASE_CREDENTIALS'))
+                ->withServiceAccount(json_decode($firebaseCredentials, true))
                 ->withDatabaseUri(config('services.firebase.database_url')) // Pas besoin de withStorageBucket()
                 ->createDatabase();
         });
