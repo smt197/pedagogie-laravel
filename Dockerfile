@@ -47,5 +47,5 @@ EXPOSE 9000
 
 
 # Lancer PHP-FPM
-CMD php artisan serve --port=8080
+CMD php artisan serve --host=0.0.0.0 --port=1000
 
