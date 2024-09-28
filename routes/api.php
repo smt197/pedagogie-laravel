@@ -11,6 +11,7 @@ Route::get('v1/env', function () {
     return env('AUTH_DRIVER');
 });
 
+    Route::get('/v1/users/export', [UserController::class, 'exportExcel']);
 
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
@@ -23,7 +24,7 @@ Route::middleware(['auth:api', 'check.auth'])->prefix('v1')->group(function () {
     
     Route::apiResource('/users', UserController::class)->only(['index', 'store', 'show']);
     Route::patch('/users/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::get('/v1/users/export', [UserController::class, 'exportExcel']);
+    // Route::get('/v1/users/export', [UserController::class, 'exportExcel']);
     
     Route::post('/referentiels', [ReferentielController::class, 'store']);
     Route::get('/referentiel', [ReferentielController::class, 'index']);

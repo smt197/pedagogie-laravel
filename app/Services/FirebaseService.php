@@ -64,7 +64,8 @@ class FirebaseService implements FirebaseServiceInterface
                     [
                         'uid' => $user->uid,
                         'email' => $user->email,
-                        'displayName' => $user->displayName,                    ],
+                        'displayName' => $user->displayName,                    
+                    ],
                     $userDetails ?? []
                 );
             }
@@ -103,6 +104,5 @@ class FirebaseService implements FirebaseServiceInterface
             throw new \Exception('Erreur lors de la récupération de l\'utilisateur: '. $e->getMessage());
         }
     }
-
 
 }

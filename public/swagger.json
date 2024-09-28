@@ -38,7 +38,7 @@
                   },
                   "password": {
                     "type": "string",
-                    "example": "password123"
+                    "example": "Passer@123"
                   }
                 },
                 "required": [
@@ -2052,6 +2052,255 @@
                     "message": {
                       "type": "string",
                       "example": "Erreur lors de la clôture de la promotion."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/apprenants": {
+      "post": {
+        "summary": "Inscription d'un nouvel apprenant",
+        "description": "Inscrit un nouvel apprenant en validant les informations fournies, générant un QR code, un PDF et en associant l'apprenant à un utilisateur, une promotion et un référentiel.",
+        "operationId": "inscrireApprenant",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nom": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "prenom": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "adresse": {
+                    "type": "string",
+                    "example": "123 rue de la République"
+                  },
+                  "telephone": {
+                    "type": "string",
+                    "example": "0600000000"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  },
+                  "login": {
+                    "type": "string",
+                    "example": "johndoe"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "example": "photo_base64"
+                  },
+                  "referentiel_id": {
+                    "type": "string",
+                    "example": "ref123"
+                  },
+                  "promotion_id": {
+                    "type": "string",
+                    "example": "promo2024"
+                  },
+                  "tuteur": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "type": "string",
+                        "example": "Tuteur Doe"
+                      },
+                      "telephone": {
+                        "type": "string",
+                        "example": "0700000000"
+                      }
+                    }
+                  },
+                  "documents": {
+                    "type": "object",
+                    "properties": {
+                      "carte_identite": {
+                        "type": "string",
+                        "example": "base64_string"
+                      },
+                      "diplome": {
+                        "type": "string",
+                        "example": "base64_string"
+                      },
+                      "visite_medicale": {
+                        "type": "string",
+                        "example": "base64_string"
+                      },
+                      "extrait_naissance": {
+                        "type": "string",
+                        "example": "base64_string"
+                      },
+                      "casier_judiciaire": {
+                        "type": "string",
+                        "example": "base64_string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "nom",
+                  "prenom",
+                  "email",
+                  "login",
+                  "referentiel_id",
+                  "promotion_id",
+                  "tuteur",
+                  "documents"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Apprenant inscrit avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Apprenant inscrit avec succès"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "matricule": {
+                          "type": "string",
+                          "example": "APP-1234"
+                        },
+                        "nom": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "prenom": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john.doe@example.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur lors de l'inscription de l'apprenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur de validation des données"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Récupérer la liste des apprenants",
+        "description": "Récupère la liste de tous les apprenants, optionnellement filtrés par référentiel.",
+        "operationId": "getAllApprenants",
+        "parameters": [
+          {
+            "name": "referentiel_id",
+            "in": "query",
+            "required": false,
+            "description": "Filtrer les apprenants par référentiel ID",
+            "schema": {
+              "type": "string",
+              "example": "ref123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des apprenants récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "matricule": {
+                            "type": "string",
+                            "example": "APP-1234"
+                          },
+                          "nom": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "prenom": {
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "john.doe@example.com"
+                          },
+                          "referentiel_id": {
+                            "type": "string",
+                            "example": "ref123"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur lors de la récupération des apprenants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la récupération des apprenants"
                     }
                   }
                 }
